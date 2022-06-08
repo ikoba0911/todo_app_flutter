@@ -1,85 +1,44 @@
-
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/Model/todo.dart';
+import 'package:todo_app_flutter/home_page/home_bloc.dart';
 
-class HomePage extends StatefulWidget {
-
-  // Initialize state containing view.
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-  late StreamController _streamController;
-  late Stream _stream;
-
-  @override
-  void initState() {
-    _streamController = StreamController();
-    _stream= _streamController.stream;
-  }
-
-  void _incrementCounter() {
-    _streamController.sink.add(_counter++);
-  }
-
-  @override
-  void dispose() {}
+class HomePage extends StatelessWidget {
+  final _bloc = HomeBloc();
 
   @override
   Widget build(BuildContext context) {
+    _bloc.fetchAllTodo(); // acquire the values to be displayed in the list
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("rxdart sample"),
+        title: const Text("TodoList"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            StreamBuilder(
-                stream: _stream,
-                builder: (BuildContext context, AsyncSnapshot snapshot){
+      body: StreamBuilder<List<Todo>>(
+        stream: _bloc.allTodo,
+        builder: (BuildContext context, AsyncSnapshot<List<Todo>> snapshot) {
+          if (snapshot.hasData) {
+            return _todoList(snapshot);
+          } else if (snapshot.hasError) {
+            return Text("An error has occurred. Message:${snapshot.error}");
+          }
 
-                  return  Text(
-                    snapshot.data != null ? snapshot.data.toString() : "0",
-                    style: Theme.of(context).textTheme.displayMedium,
-                  );
-                }
-            )
-          ],
-        ),
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  // TodoList
+  Widget _todoList(AsyncSnapshot<List<Todo>> snapshot) {
+    return ListView.builder(
+      itemCount: snapshot.data!.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(snapshot.data![index].title),
+        );
+      },
     );
   }
 }
-
-// class CounterBloc {
-//   final _actionController = StreamController<void>();
-//   Sink<void> get increment => _actionController.sink;
-//
-//   final _countController = StreamController<int>();
-//   Stream<int> get count => _countController.stream;
-//
-//   int _count = 0;
-//
-//   CounterBloc() {
-//     _actionController.stream.listen((_) {
-//       _count++;
-//       _countController.sink.add(_count);
-//     });
-//   }
-//
-//   void dispose() {
-//     _actionController.close();
-//     _countController.close();
-//   }
-// }
