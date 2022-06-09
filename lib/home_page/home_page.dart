@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/Enum/task_state.dart';
 import 'package:todo_app_flutter/Model/todo.dart';
 import 'package:todo_app_flutter/home_page/home_bloc.dart';
 
 class HomePage extends StatelessWidget {
   final _bloc = HomeBloc();
+  bool _isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,10 @@ class HomePage extends StatelessWidget {
       itemCount: snapshot.data!.length,
       itemBuilder: (context, index) {
         return ListTile(
+          leading: Checkbox(
+            value: snapshot.data![index].state == TaskState.done,
+            onChanged: (value) {},
+          ),
           title: Text(snapshot.data![index].title),
         );
       },
