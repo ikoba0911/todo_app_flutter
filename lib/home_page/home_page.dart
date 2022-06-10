@@ -29,6 +29,12 @@ class HomePage extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _bloc.addTask(Todo(999, 'new task', TaskState.todo));
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -44,7 +50,14 @@ class HomePage extends StatelessWidget {
               _bloc.updateTaskState(index);
             },
           ),
-          title: Text(snapshot.data![index].title),
+          title: Text(
+            snapshot.data![index].title,
+            style: snapshot.data![index].state == TaskState.done
+                ? const TextStyle(
+                    decoration: TextDecoration.lineThrough,
+                  )
+                : null,
+          ),
         );
       },
     );
