@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../Enum/task_state.dart';
 import '../../Model/todo.dart';
 
@@ -13,22 +14,44 @@ class TodoList extends StatelessWidget {
     return ListView.builder(
       itemCount: snapshot.data!.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          leading: Checkbox(
-            value: snapshot.data![index].state == TaskState.done,
-            onChanged: (_) {},
+        return Slidable(
+          endActionPane: ActionPane(
+            motion: const DrawerMotion(),
+            extentRatio: 0.50,
+            children: [
+              Builder(builder: (context) {
+                return SlidableAction(
+                  label: 'Edit',
+                  backgroundColor: Colors.blue,
+                  icon: Icons.edit,
+                  onPressed: (context) {},
+                );
+              }),
+              SlidableAction(
+                label: 'Delete',
+                backgroundColor: Colors.red,
+                icon: Icons.delete,
+                onPressed: (context) {},
+              ),
+            ],
           ),
-          title: Text(
-            snapshot.data![index].title,
-            style: snapshot.data![index].state == TaskState.done
-                ? const TextStyle(
-                    decoration: TextDecoration.lineThrough,
-                  )
-                : null,
+          child: ListTile(
+            leading: Checkbox(
+              value: snapshot.data![index].state == TaskState.done,
+              onChanged: (_) {},
+            ),
+            title: Text(
+              snapshot.data![index].title,
+              style: snapshot.data![index].state == TaskState.done
+                  ? const TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                    )
+                  : null,
+            ),
+            onTap: () {
+              onPressedCallback(index);
+            },
           ),
-          onTap: () {
-            onPressedCallback(index);
-          },
         );
       },
     );
