@@ -22,7 +22,12 @@ class HomePage extends StatelessWidget {
         stream: _bloc.listDataSource.stream,
         builder: (BuildContext context, AsyncSnapshot<List<Todo>> snapshot) {
           if (snapshot.hasData) {
-            return TodoList(snapshot, _bloc.updateTaskState);
+            return TodoList(
+              snapshot,
+              _bloc.updateTaskState,
+              _bloc.deleteTask,
+              _bloc.editTask,
+            );
           } else if (snapshot.hasError) {
             return Text("An error has occurred. Message:${snapshot.error}");
           }

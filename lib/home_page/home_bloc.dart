@@ -16,6 +16,8 @@ class HomeBloc {
   // MARK: Input
   final _updateCheckSubject = PublishSubject<int>();
   final _addTaskSubject = PublishSubject<Todo>();
+  final _deleteTaskSubject = PublishSubject<int>();
+  final _editTaskSubject = PublishSubject<int>();
 
   void fetchAllTodo() async {
     List<Todo> todoList = await _repository.fetchAllProvider();
@@ -28,6 +30,14 @@ class HomeBloc {
 
   void addTask(Todo todo) {
     _addTaskSubject.sink.add(todo);
+  }
+
+  void deleteTask(int index) {
+    _deleteTaskSubject.sink.add(index);
+  }
+
+  void editTask(int index) {
+    _editTaskSubject.sink.add(index);
   }
 
   HomeBloc() {
@@ -53,6 +63,13 @@ class HomeBloc {
     _addTaskSubject.stream.listen((todo) {
       List<Todo> currentTodoList = listDataSource.value;
       currentTodoList.add(todo);
+      listDataSource.sink.add(currentTodoList);
+    });
+
+    // delete
+    _deleteTaskSubject.stream.listen((index) {
+      List<Todo> currentTodoList = listDataSource.value;
+      currentTodoList.removeAt(index);
       listDataSource.sink.add(currentTodoList);
     });
   }

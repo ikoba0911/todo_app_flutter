@@ -5,9 +5,17 @@ import '../../Model/todo.dart';
 
 class TodoList extends StatelessWidget {
   final Function(int) onPressedCallback;
+  final Function(int) deleteTaskCallback;
+  final Function(int) editTaskCallback;
   final AsyncSnapshot<List<Todo>> snapshot;
 
-  const TodoList(this.snapshot, this.onPressedCallback, {Key? key}) : super(key: key);
+  const TodoList(
+      this.snapshot,
+      this.onPressedCallback,
+      this.deleteTaskCallback,
+      this.editTaskCallback,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +32,18 @@ class TodoList extends StatelessWidget {
                   label: 'Edit',
                   backgroundColor: Colors.blue,
                   icon: Icons.edit,
-                  onPressed: (context) {},
+                  onPressed: (context) {
+                    editTaskCallback(index);
+                  },
                 );
               }),
               SlidableAction(
                 label: 'Delete',
                 backgroundColor: Colors.red,
                 icon: Icons.delete,
-                onPressed: (context) {},
+                onPressed: (context) {
+                  deleteTaskCallback(index);
+                },
               ),
             ],
           ),
