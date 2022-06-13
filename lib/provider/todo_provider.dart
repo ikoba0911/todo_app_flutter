@@ -1,5 +1,5 @@
-import 'package:todo_app_flutter/Enum/task_state.dart';
-import 'package:todo_app_flutter/Model/todo.dart';
+import '../enum/task_state.dart';
+import '../model/todo.dart';
 
 class TodoProvider {
   // Layer to retrieve data from Local and the Web.

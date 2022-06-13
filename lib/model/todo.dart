@@ -1,4 +1,4 @@
-import 'package:todo_app_flutter/Enum/task_state.dart';
+import '../enum/task_state.dart';
 
 class Todo {
   int id;

@@ -1,5 +1,5 @@
-import 'package:todo_app_flutter/Provider/todo_provider.dart';
-import '../Model/todo.dart';
+import '../model/todo.dart';
+import '../provider/todo_provider.dart';
 
 class TodoRepository {
   // Create this class with Dependency injection in mind.

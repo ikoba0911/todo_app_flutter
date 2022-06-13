@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app_flutter/Enum/task_state.dart';
-import 'package:todo_app_flutter/Model/todo.dart';
-import 'package:todo_app_flutter/home_page/home_bloc.dart';
+import '../../enum/task_state.dart';
+import '../../model/todo.dart';
+import 'home_bloc.dart';
 import 'widget/todo_list.dart';
 
 class HomePage extends StatelessWidget {

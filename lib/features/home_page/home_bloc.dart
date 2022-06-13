@@ -1,7 +1,7 @@
 import 'package:rxdart/rxdart.dart';
-import 'package:todo_app_flutter/Enum/task_state.dart';
-import 'package:todo_app_flutter/Model/todo.dart';
-import 'package:todo_app_flutter/Repository/todo_repository.dart';
+import '../../enum/task_state.dart';
+import '../../model/todo.dart';
+import '../../repository/todo_repository.dart';
 
 class HomeBloc {
   // Todo fetch from repository.

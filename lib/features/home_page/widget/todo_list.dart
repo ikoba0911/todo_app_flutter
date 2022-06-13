@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import '../../Enum/task_state.dart';
-import '../../Model/todo.dart';
+import '../../../enum/task_state.dart';
+import '../../../model/todo.dart';
 
 class TodoList extends StatelessWidget {
   final Function(int) onPressedCallback;
@@ -9,10 +9,7 @@ class TodoList extends StatelessWidget {
   final Function(int) editTaskCallback;
   final AsyncSnapshot<List<Todo>> snapshot;
 
-  const TodoList(
-      this.snapshot,
-      this.onPressedCallback,
-      this.deleteTaskCallback,
+  const TodoList(this.snapshot, this.onPressedCallback, this.deleteTaskCallback,
       this.editTaskCallback,
       {Key? key})
       : super(key: key);
