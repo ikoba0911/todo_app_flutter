@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../enum/task_state.dart';
+import 'package:todo_app_flutter/features/edit_page/edit_page.dart';
 import '../../model/todo.dart';
 import 'home_bloc.dart';
 import 'widget/todo_list.dart';
@@ -38,8 +38,13 @@ class HomePage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _bloc.addTask(Todo(999, 'new task', TaskState.todo));
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditPage(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),

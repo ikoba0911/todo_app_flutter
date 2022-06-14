@@ -77,5 +77,9 @@ class HomeBloc {
   dispose() {
     _todoFetcher.close();
     listDataSource.close();
+    _updateCheckSubject.close();
+    _addTaskSubject.close();
+    _deleteTaskSubject.close();
+    _editTaskSubject.close();
   }
 }
