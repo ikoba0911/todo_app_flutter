@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app_flutter/constants/constants.dart';
+import '../../../enum/task_edit_type.dart';
 import '../../../enum/task_state.dart';
 import '../../../model/todo.dart';
+import '../../edit_page/edit_page.dart';
 
 class TodoList extends StatelessWidget {
+  final AsyncSnapshot<List<Todo>> snapshot;
   final Function(int) onPressedCallback;
   final Function(int) deleteTaskCallback;
-  final Function(int) editTaskCallback;
-  final AsyncSnapshot<List<Todo>> snapshot;
+  final Function(int, String, Todo) editTaskCallback;
+  final Function(String, Color) snackBarCallback;
 
   const TodoList(this.snapshot, this.onPressedCallback, this.deleteTaskCallback,
-      this.editTaskCallback,
+      this.editTaskCallback, this.snackBarCallback,
       {Key? key})
       : super(key: key);
 
@@ -26,20 +30,32 @@ class TodoList extends StatelessWidget {
             children: [
               Builder(builder: (context) {
                 return SlidableAction(
-                  label: 'Edit',
+                  label: sliderMenuTitleForEditing,
                   backgroundColor: Colors.blue,
                   icon: Icons.edit,
-                  onPressed: (context) {
-                    editTaskCallback(index);
+                  onPressed: (context) async {
+                    final String? taskTitle = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditPage(
+                            TaskEditType.edit, snapshot.data![index].title),
+                      ),
+                    );
+
+                    if (taskTitle != null) {
+                      editTaskCallback(index, taskTitle, snapshot.data![index]);
+                      snackBarCallback(snackBarMessageForEditing, Colors.green);
+                    }
                   },
                 );
               }),
               SlidableAction(
-                label: 'Delete',
+                label: sliderMenuTitleForDeletion,
                 backgroundColor: Colors.red,
                 icon: Icons.delete,
                 onPressed: (context) {
                   deleteTaskCallback(index);
+                  snackBarCallback(snackBarMessageForDeletion, Colors.red);
                 },
               ),
             ],

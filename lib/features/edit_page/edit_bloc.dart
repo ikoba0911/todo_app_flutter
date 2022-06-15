@@ -6,8 +6,14 @@ class EditBloc {
   TextEditingController taskController = TextEditingController();
 
   // MARK: Input
-  final _submitSubject = PublishSubject<void>();
-  final _taskTitleSubject = BehaviorSubject<String>();
+  final _taskTitleSubject = BehaviorSubject<String>.seeded('');
+
+  // By not requiring the argument, null is returned if it is not set
+  EditBloc([String? taskTitle]) {
+    if (taskTitle != null) {
+      taskController.text = taskTitle;
+    }
+  }
 
   String getFinalTaskTitle() {
     return _taskTitleSubject.value;
@@ -17,15 +23,7 @@ class EditBloc {
     _taskTitleSubject.sink.add(task);
   }
 
-  EditBloc() {
-    // data binding
-    _bind();
-  }
-
-  void _bind() {}
-
   dispose() {
-    _submitSubject.close();
     _taskTitleSubject.close();
   }
 }

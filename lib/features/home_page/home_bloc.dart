@@ -1,7 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../enum/task_state.dart';
 import '../../model/todo.dart';
 import '../../repository/todo_repository.dart';
+
+@immutable
+class TaskEditModel {
+  final int taskIndex;
+  final Todo todo;
+
+  const TaskEditModel(this.taskIndex, this.todo);
+}
 
 class HomeBloc {
   // Todo fetch from repository.
@@ -17,7 +26,7 @@ class HomeBloc {
   final _updateCheckSubject = PublishSubject<int>();
   final _addTaskSubject = PublishSubject<Todo>();
   final _deleteTaskSubject = PublishSubject<int>();
-  final _editTaskSubject = PublishSubject<int>();
+  final _editTaskSubject = PublishSubject<TaskEditModel>();
 
   void fetchAllTodo() async {
     List<Todo> todoList = await _repository.fetchAllProvider();
@@ -36,8 +45,10 @@ class HomeBloc {
     _deleteTaskSubject.sink.add(index);
   }
 
-  void editTask(int index) {
-    _editTaskSubject.sink.add(index);
+  void editTask(int index, String taskTitle, Todo selectedTodo) {
+    Todo currentTodo = selectedTodo;
+    currentTodo.title = taskTitle;
+    _editTaskSubject.sink.add(TaskEditModel(index, currentTodo));
   }
 
   HomeBloc() {
@@ -72,11 +83,18 @@ class HomeBloc {
       currentTodoList.removeAt(index);
       listDataSource.sink.add(currentTodoList);
     });
+
+    // edit
+    _editTaskSubject.stream.listen((editModel) {
+      List<Todo> currentTodoList = listDataSource.value;
+      currentTodoList[editModel.taskIndex] = editModel.todo;
+      listDataSource.sink.add(currentTodoList);
+    });
   }
 
   dispose() {
-    _todoFetcher.close();
     listDataSource.close();
+    _todoFetcher.close();
     _updateCheckSubject.close();
     _addTaskSubject.close();
     _deleteTaskSubject.close();

@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/constants/constants.dart';
+import 'package:todo_app_flutter/enum/task_edit_type.dart';
 import 'package:todo_app_flutter/features/edit_page/edit_bloc.dart';
 
 class EditPage extends StatelessWidget {
-  final _bloc = EditBloc();
+  final TaskEditType? type;
+  EditBloc bloc = EditBloc();
 
-  EditPage({Key? key}) : super(key: key);
+  EditPage(this.type, String? taskTitle) {
+    if (taskTitle != null) {
+      bloc = EditBloc(taskTitle);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("EditTask"),
+        title: Text(type?.pageTitle ?? ''),
       ),
       body: Center(
         child: Padding(
@@ -18,12 +25,12 @@ class EditPage extends StatelessWidget {
           child: Column(
             children: [
               TextField(
-                controller: _bloc.taskController,
+                controller: bloc.taskController,
                 decoration: const InputDecoration(
-                  hintText: 'Input task',
+                  hintText: placeholdersForInputFields,
                 ),
                 onChanged: (text) {
-                  _bloc.sendTaskTitle(text);
+                  bloc.sendTaskTitle(text);
                 },
               ),
               const SizedBox(
@@ -31,9 +38,9 @@ class EditPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(_bloc.getFinalTaskTitle());
+                  Navigator.of(context).pop(bloc.getFinalTaskTitle());
                 },
-                child: const Text('Submit'),
+                child: Text(type?.buttonTitle ?? ''),
               )
             ],
           ),
