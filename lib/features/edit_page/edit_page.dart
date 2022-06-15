@@ -22,13 +22,17 @@ class EditPage extends StatelessWidget {
                 decoration: const InputDecoration(
                   hintText: 'Input task',
                 ),
-                onChanged: (text) {},
+                onChanged: (text) {
+                  _bloc.sendTaskTitle(text);
+                },
               ),
               const SizedBox(
                 height: 16,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop(_bloc.getFinalTaskTitle());
+                },
                 child: const Text('Submit'),
               )
             ],

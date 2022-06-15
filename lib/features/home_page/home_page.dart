@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app_flutter/enum/task_state.dart';
 import 'package:todo_app_flutter/features/edit_page/edit_page.dart';
 import '../../model/todo.dart';
 import 'home_bloc.dart';
 import 'widget/todo_list.dart';
+import 'dart:math' as math;
 
 class HomePage extends StatelessWidget {
   final _bloc = HomeBloc();
@@ -39,12 +41,17 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Navigator.push(
+          final String? taskTitle = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => EditPage(),
             ),
           );
+
+          if (taskTitle != null) {
+            final randomId = math.Random().nextInt(1000);
+            _bloc.addTask(Todo(randomId, taskTitle, TaskState.todo));
+          }
         },
         child: const Icon(Icons.add),
       ),

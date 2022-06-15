@@ -7,13 +7,13 @@ class EditBloc {
 
   // MARK: Input
   final _submitSubject = PublishSubject<void>();
-  final _taskTitleSubject = PublishSubject<String>();
+  final _taskTitleSubject = BehaviorSubject<String>();
 
-  void submit() {
-    _submitSubject.sink;
+  String getFinalTaskTitle() {
+    return _taskTitleSubject.value;
   }
 
-  void editTask(String task) {
+  void sendTaskTitle(String task) {
     _taskTitleSubject.sink.add(task);
   }
 
