@@ -20,7 +20,7 @@ class EditBloc {
   }
 
   void sendTaskTitle(String task) {
-    _taskTitleSubject.sink.add(task);
+    _taskTitleSubject.add(task);
   }
 
   dispose() {
