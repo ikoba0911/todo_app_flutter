@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'features/home_page/home_page.dart';
+import 'package:todo_app_flutter/features/home_page/home_page.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: HomePage(),
   ));
 }

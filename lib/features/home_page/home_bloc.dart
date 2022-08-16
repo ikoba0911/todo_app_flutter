@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../enum/task_state.dart';
-import '../../model/todo.dart';
-import '../../repository/todo_repository.dart';
+import 'package:todo_app_flutter/enum/task_state.dart';
+import 'package:todo_app_flutter/model/todo.dart';
+import 'package:todo_app_flutter/repository/todo_repository.dart';
+
 
 @immutable
 class TaskEditModel {
@@ -30,25 +31,25 @@ class HomeBloc {
 
   void fetchAllTodo() async {
     List<Todo> todoList = await _repository.fetchAllProvider();
-    _todoFetcher.sink.add(todoList);
+    _todoFetcher.add(todoList);
   }
 
   void updateTaskState(int index) {
-    _updateCheckSubject.sink.add(index);
+    _updateCheckSubject.add(index);
   }
 
   void addTask(Todo todo) {
-    _addTaskSubject.sink.add(todo);
+    _addTaskSubject.add(todo);
   }
 
   void deleteTask(int index) {
-    _deleteTaskSubject.sink.add(index);
+    _deleteTaskSubject.add(index);
   }
 
   void editTask(int index, String taskTitle, Todo selectedTodo) {
     Todo currentTodo = selectedTodo;
     currentTodo.title = taskTitle;
-    _editTaskSubject.sink.add(TaskEditModel(index, currentTodo));
+    _editTaskSubject.add(TaskEditModel(index, currentTodo));
   }
 
   HomeBloc() {
@@ -67,28 +68,28 @@ class HomeBloc {
       List<Todo> currentTodoList = listDataSource.value;
       final isDone = currentTodoList[index].state == TaskState.done;
       currentTodoList[index].state = isDone ? TaskState.todo : TaskState.done;
-      listDataSource.sink.add(currentTodoList);
+      listDataSource.add(currentTodoList);
     });
 
     // add
     _addTaskSubject.stream.listen((todo) {
       List<Todo> currentTodoList = listDataSource.value;
       currentTodoList.add(todo);
-      listDataSource.sink.add(currentTodoList);
+      listDataSource.add(currentTodoList);
     });
 
     // delete
     _deleteTaskSubject.stream.listen((index) {
       List<Todo> currentTodoList = listDataSource.value;
       currentTodoList.removeAt(index);
-      listDataSource.sink.add(currentTodoList);
+      listDataSource.add(currentTodoList);
     });
 
     // edit
     _editTaskSubject.stream.listen((editModel) {
       List<Todo> currentTodoList = listDataSource.value;
       currentTodoList[editModel.taskIndex] = editModel.todo;
-      listDataSource.sink.add(currentTodoList);
+      listDataSource.add(currentTodoList);
     });
   }
 

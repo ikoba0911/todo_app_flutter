@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app_flutter/constants/constants.dart';
-import '../../../enum/task_edit_type.dart';
-import '../../../enum/task_state.dart';
-import '../../../model/todo.dart';
-import '../../edit_page/edit_page.dart';
+import 'package:todo_app_flutter/enum/task_edit_type.dart';
+import 'package:todo_app_flutter/enum/task_state.dart';
+import 'package:todo_app_flutter/features/edit_page/edit_page.dart';
+import 'package:todo_app_flutter/model/todo.dart';
+
 
 class TodoList extends StatelessWidget {
   final AsyncSnapshot<List<Todo>> snapshot;
@@ -38,7 +39,9 @@ class TodoList extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => EditPage(
-                            TaskEditType.edit, snapshot.data![index].title),
+                          type: TaskEditType.edit,
+                          taskTitle: snapshot.data![index].title,
+                        ),
                       ),
                     );
 
