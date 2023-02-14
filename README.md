@@ -4,7 +4,7 @@ This is the simple todo app that create with Flutter.
 # Quick Start
 1. Clone this repository
 ```
-$ git clone https://github.com/Ayamegu/todo_app_flutter.git
+$ git clone https://github.com/ikoba0911/todo_app_flutter.git
 ```
 2. Go into the repository
 ```
